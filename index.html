@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mohammed Shafiq AS | Data & Business Analyst Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cyan: #00f3ff;
+      --pink: #ff007f;
+      --purple: #9d00ff;
+      --dark: #0a0a0a;
+      --light: #e0e0e0;
+      --card-bg: rgba(20, 20, 20, 0.7);
+      --bg-dark: #050505;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui;
+      background: var(--bg-dark);
+      color: var(--light);
+      overflow-x: hidden;
+      cursor: none; /* custom cursor */
+    }
+
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 4px; }
+
+    /* ── CUSTOM CURSOR ── */
+    #cursor-dot, #cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    #cursor-dot {
+      width: 8px; height: 8px;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+      transition: transform 0.1s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(0, 243, 255, 0.5);
+      transition: width 0.3s, height 0.3s, background 0.3s;
+    }
+
+    /* ── BG CANVAS ── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      background: rgba(5, 5, 5, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+      transition: all .3s;
+    }
+    .nav-link {
+      font-size: .85rem; font-weight: 600; color: #a0a0a0;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      transition: color .3s;
+    }
+    .nav-link:hover { color: var(--cyan); }
+
+    /* ── SECTION TAGS ── */
+    .section-tag {
+      display: inline-block;
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: .18em;
+      color: var(--cyan);
+      padding: 6px 16px;
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 99px;
+      background: rgba(0, 243, 255, 0.05);
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0,243,255,0.1);
+    }
+    .grad-line {
+      display: block; width: 60px; height: 3px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      margin-top: 12px;
+    }
+
+    /* ── GLASSMORPHISM CARDS ── */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 1.5rem;
+      backdrop-filter: blur(16px);
+      transition: transform .3s ease, box-shadow .3s ease, border-color .3s;
+    }
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 243, 255, 0.1);
+      border-color: rgba(0, 243, 255, 0.4);
+    }
+
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      display: block;
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 243, 255, 0.1);
+      backdrop-filter: blur(12px);
+      transition: all 0.4s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(157, 0, 255, 0.2);
+      border-color: var(--purple);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      color: #fff; font-weight: 600;
+      border-radius: 99px;
+      display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+      transition: all .3s ease; border: none; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 243, 255, 0.3);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 8px 30px rgba(157, 0, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+      color: var(--light);
+      display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+      transition: all .3s ease; cursor: pointer; font-weight: 500;
+    }
+    .btn-ghost:hover {
+      background: rgba(0, 243, 255, 0.1);
+      border-color: var(--cyan); color: #fff;
+      box-shadow: 0 4px 15px rgba(0, 243, 255, 0.2);
+    }
+
+    /* ── PILLS ── */
+    .skill-pill {
+      display: flex; align-items: center; gap: .6rem;
+      padding: .65rem 1.2rem;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: .85rem; font-weight: 500; color: #ccc;
+      transition: all .3s ease;
+    }
+    .skill-pill:hover {
+      background: rgba(0,243,255,0.1); border-color: var(--cyan); color: #fff;
+      box-shadow: 0 0 15px rgba(0,243,255,0.2); transform: translateY(-2px);
+    }
+
+    .cert-badge {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.25rem;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 1.25rem;
+      transition: all .3s;
+    }
+    .cert-badge:hover {
+      border-color: var(--pink); box-shadow: 0 10px 30px rgba(255,0,127,0.15);
+      transform: translateY(-3px);
+    }
+
+    .form-input {
+      width: 100%; background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem;
+      padding: 1rem 1.4rem; color: #fff; font-size: .95rem;
+      transition: all .3s; outline: none;
+    }
+    .form-input:focus {
+      background: rgba(0,0,0,0.6); border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,243,255,0.2);
+    }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes float { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+    .float { animation: float 5s ease-in-out infinite; }
+    
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ════════════════ NAVBAR ════════════════ -->
+  <nav id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative">
+      <a href="#hero" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg font-bold font-display bg-[var(--cyan)] text-black">S</div>
+        <span class="font-display font-bold text-xl tracking-tight text-white">SHAFIQ<span class="text-[var(--cyan)]">.</span></span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#about" class="nav-link">ABOUT</a>
+        <a href="#skills" class="nav-link">SKILLS</a>
+        <a href="#projects" class="nav-link">PROJECTS</a>
+        <a href="#github" class="nav-link">GITHUB</a>
+        <a href="#internships" class="nav-link">EXPERIENCE</a>
+        <a href="#certifications" class="nav-link">CERTS</a>
+        <a href="#contact" class="nav-link">CONNECT</a>
+      </div>
+      <div class="hidden md:flex items-center gap-3">
+        <a href="https://github.com/Shafiq-456" target="_blank" class="btn-ghost px-5 py-2.5 text-sm"><i class="fa-brands fa-github"></i> GitHub</a>
+        <a href="Mohammed_Shafiq_Resume.pdf" download class="btn-primary px-5 py-2.5 text-sm text-black"><i class="fa-solid fa-download"></i> Download CV</a>
+      </div>
+      <button id="hamburger" class="md:hidden w-9 h-9 flex flex-col justify-center gap-1.5 items-center" onclick="toggleMenu()">
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+        <span class="w-6 h-0.5 bg-white transition-all"></span>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="flex-col gap-4 px-6 pb-6 text-sm font-semibold tracking-wide bg-black relative top-1">
+      <a href="#about" onclick="toggleMenu()" class="nav-link">ABOUT</a>
+      <a href="#skills" onclick="toggleMenu()" class="nav-link">SKILLS</a>
+      <a href="#projects" onclick="toggleMenu()" class="nav-link">PROJECTS</a>
+      <a href="#contact" onclick="toggleMenu()" class="nav-link">CONTACT</a>
+      <a href="Mohammed_Shafiq_Resume.pdf" download class="btn-primary px-5 py-3 text-sm w-fit text-black">
+        <i class="fa-solid fa-download"></i> Download CV
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="min-h-screen pt-32 pb-20 flex items-center relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10 w-full">
+      <div class="reveal visible">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--cyan)] bg-[rgba(0,243,255,0.05)] text-[var(--cyan)] text-xs font-bold tracking-widest mb-8">
+          FINAL YEAR • CS & BUSINESS SYSTEMS • 2025
+        </div>
+        <h1 class="font-display font-bold text-6xl md:text-8xl leading-tight mb-4 text-white">
+          MOHAMMED <br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--cyan)] to-[var(--purple)]">SHAFIQ AS</span>
+        </h1>
+        <div class="text-lg text-gray-400 mb-8 max-w-xl">
+          Turning data into winning strategies.<br><br>
+          Aspiring Business Analyst & Data Analyst with hands-on experience in Python, Power BI, Machine Learning, and full-stack development. Looking to leverage data insights to drive real business impact.
+        </div>
+        <div class="flex flex-wrap gap-4 mb-12">
+          <a href="#projects" class="btn-primary rounded-full px-8 py-4 !text-black"><i class="fa-solid fa-rocket"></i> Explore Projects</a>
+          <a href="https://linkedin.com/in/mdshafiq45/" target="_blank" class="btn-ghost rounded-full px-8 py-4"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+          <a href="mailto:shafiqhomelife@gmail.com" class="btn-ghost rounded-full px-8 py-4"><i class="fa-solid fa-envelope"></i> Email Me</a>
+        </div>
+        
+        <div class="flex flex-wrap gap-4 mt-8">
+          <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.05)] rounded-2xl px-8 py-4 w-full sm:w-auto text-center">
+            <div class="text-3xl font-display font-bold text-[var(--cyan)]">7.89</div>
+            <div class="text-xs text-gray-500 mt-1 uppercase tracking-wider">CGPA</div>
+          </div>
+          <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.05)] rounded-2xl px-8 py-4 w-full sm:w-auto text-center">
+            <div class="text-3xl font-display font-bold text-[var(--purple)]">70%</div>
+            <div class="text-xs text-gray-500 mt-1 uppercase tracking-wider">Grading Time Saved</div>
+          </div>
+          <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.05)] rounded-2xl px-8 py-4 w-full sm:w-auto text-center">
+            <div class="text-3xl font-display font-bold text-[var(--pink)]">82%</div>
+            <div class="text-xs text-gray-500 mt-1 uppercase tracking-wider">ML Accuracy</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="reveal visible relative w-full flex justify-center lg:justify-end">
+        <div class="relative float">
+          <!-- Ambient glowing ring behind image -->
+          <div class="absolute inset-0 bg-[var(--purple)] blur-[80px] opacity-30 transform scale-125"></div>
+          <div class="absolute inset-0 bg-[var(--cyan)] blur-[60px] opacity-20 transform translate-x-8 -translate-y-8"></div>
+          
+          <!-- Image Card exactly sized and positioned from previous output -->
+          <div class="relative rounded-2xl border-2 border-[var(--cyan)] overflow-visible shadow-[0_0_30px_rgba(0,243,255,0.3)] w-[270px] h-[340px] bg-[var(--bg-dark)]">
+             <!-- DATA ANALYST Badge overlapping border top right -->
+             <div class="absolute -top-3 -right-3 z-20 bg-[var(--bg-dark)] border border-[var(--cyan)] rounded-full px-3 py-1 flex items-center gap-2 text-xs font-bold text-[var(--cyan)] shadow-[0_4px_15px_rgba(0,0,0,0.5)]">
+               <i class="fa-solid fa-chart-line"></i> DATA ANALYST
+             </div>
+             
+             <!-- Image fits strictly into passport size -->
+             <img src="avatar.jpg" alt="Mohammed Shafiq AS" class="w-full h-full object-cover rounded-2xl relative z-10">
+             
+             <!-- KARUR Badge overlapping bottom left -->
+             <div class="absolute -bottom-3 -left-3 z-20 bg-[var(--bg-dark)] border border-[var(--purple)] rounded-full px-3 py-1 flex items-center gap-2 text-xs font-bold text-[var(--purple)] shadow-[0_4px_15px_rgba(0,0,0,0.5)]">
+               <i class="fa-solid fa-location-dot"></i> KARUR, TN
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ ABOUT ME ════════════════ -->
+  <section id="about" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-16 items-start">
+        <div class="reveal">
+          <span class="section-tag">WHO I AM</span>
+          <h2 class="font-display font-bold text-5xl mt-2 mb-6">About Me</h2>
+          <span class="grad-line mb-8 text-[var(--cyan)]"></span>
+          
+          <h3 class="text-xl font-bold mb-6">Hey! I'm <span class="text-[var(--cyan)]">Mohammed Shafiq AS</span> —</h3>
+          <p class="text-[15px] text-gray-400 mb-6 leading-relaxed">A final-year B.Tech student in <span class="font-bold text-white">Computer Science & Business Systems</span> at VSB Engineering College, Karur.</p>
+          <p class="text-[15px] text-gray-400 mb-6 leading-relaxed">I'm passionate about transforming raw data into powerful, actionable business strategies using <span class="font-bold text-[var(--cyan)]">Python, Power BI, Machine Learning, SQL</span>, and <span class="font-bold text-[var(--cyan)]">AI</span>. I love building intelligent systems that solve real-world problems and create measurable impact.</p>
+          <p class="text-[15px] text-gray-400 mb-6 leading-relaxed">I focus on building practical solutions at the <i class="text-gray-300 mx-2">intersection of technology and business.</i></p>
+          <p class="text-[15px] text-gray-400 mb-10 leading-relaxed">With hands-on experience from internships in Data Analytics, Machine Learning, and Cloud Computing, I'm actively seeking <span class="font-bold pr-1 text-[var(--purple)]">Business Analyst / Data Analyst</span> roles where I can deliver data-driven insights and grow as a future tech leader.</p>
+
+          <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[20px] p-5 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-[#0c2f32] rounded-[14px] flex items-center justify-center text-[var(--cyan)] text-lg"><i class="fa-solid fa-briefcase"></i></div>
+              <div>
+                <div class="font-bold text-white text-sm">Open to Opportunities</div>
+                <div class="text-[11px] text-gray-500 mt-1">Business Analyst • Data Analyst • AI/ML Roles</div>
+              </div>
+            </div>
+            <a href="#contact" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[var(--cyan)] to-[var(--purple)] text-black font-bold text-xs inline-flex items-center gap-2 transition hover:scale-105">Hire Me <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="reveal" style="transition-delay: .2s">
+          <div class="grid grid-cols-2 gap-4 mb-6">
+             <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[28px] py-10 px-6 text-center flex flex-col justify-center transition hover:border-[var(--pink)] hover:bg-[rgba(255,0,127,0.02)]">
+               <div class="text-[2.75rem] leading-none mb-3 font-display font-bold text-[var(--pink)]">3+</div>
+               <div class="text-[11px] text-gray-400 font-medium">Internships</div>
+             </div>
+             <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[28px] py-10 px-6 text-center flex flex-col justify-center transition hover:border-[var(--purple)] hover:bg-[rgba(157,0,255,0.02)]">
+               <div class="text-[2.75rem] leading-none mb-3 font-display font-bold text-[var(--purple)]">2</div>
+               <div class="text-[11px] text-gray-400 font-medium">Live Projects</div>
+             </div>
+             <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[28px] py-10 px-6 text-center flex flex-col justify-center transition hover:border-[var(--pink)] hover:bg-[rgba(255,0,127,0.02)]">
+               <div class="text-[2.75rem] leading-none mb-3 font-display font-bold text-[var(--pink)]">6</div>
+               <div class="text-[11px] text-gray-400 font-medium">Certifications</div>
+             </div>
+             <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[28px] py-10 px-6 text-center flex flex-col justify-center transition hover:border-[var(--cyan)] hover:bg-[rgba(0,243,255,0.02)] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+               <div class="text-[2.75rem] leading-none mb-3 font-display font-bold text-[var(--cyan)] dropdown-glow">7.89</div>
+               <div class="text-[11px] text-gray-400 font-medium">CGPA</div>
+             </div>
+          </div>
+          <div class="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[28px] p-6 text-center w-full">
+             <div class="text-[11px] text-gray-500 tracking-wider mb-4 font-bold uppercase">Looking For</div>
+             <div class="flex flex-wrap justify-center gap-3">
+               <span class="px-5 py-2 rounded-full border border-[rgba(0,243,255,0.3)] text-[var(--cyan)] text-xs font-semibold bg-[rgba(0,243,255,0.05)]">Business Analyst</span>
+               <span class="px-5 py-2 rounded-full border border-[rgba(157,0,255,0.3)] text-[var(--purple)] text-xs font-semibold bg-[rgba(157,0,255,0.05)]">Data Analyst</span>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ EDUCATION ════════════════ -->
+  <section id="education" class="py-24 relative bg-[rgba(0,0,0,0.2)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="reveal mb-14">
+        <span class="section-tag">ACADEMIC JOURNEY</span>
+        <h2 class="font-display font-bold text-5xl mt-2">Education</h2>
+        <span class="grad-line"></span>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <!-- BTech -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border hover:border-[rgba(0,243,255,0.3)] border-transparent transition-all shadow-[0_0_30px_rgba(0,0,0,0.5)] reveal">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-[48px] h-[48px] bg-[rgba(0,243,255,0.1)] rounded-[12px] flex items-center justify-center text-[var(--cyan)] text-xl shrink-0"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div>
+              <div class="font-bold text-[15px] text-[var(--cyan)]">2021 — 2025</div>
+              <div class="text-xs text-gray-400">Pursuing</div>
+            </div>
+          </div>
+          <span class="text-[10px] px-3 py-1 rounded-full bg-[rgba(0,243,255,0.1)] text-[var(--cyan)] border border-[rgba(0,243,255,0.3)] font-bold tracking-wider mb-4 inline-block">B.TECH</span>
+          <h3 class="font-display font-bold text-xl text-white mb-2 leading-tight">Computer Science & Business Systems</h3>
+          <div class="text-xs text-gray-400 mb-8 leading-relaxed">VSB Engineering College (Autonomous), Karur</div>
+          <div class="flex items-end gap-2 mt-auto">
+            <span class="font-display font-bold text-4xl text-[var(--cyan)] leading-none">7.89</span>
+            <span class="text-xs text-gray-400 pb-1">CGPA</span>
+          </div>
+        </div>
+        
+        <!-- HSC -->
+        <div class="bg-[rgba(255,255,255,0.03)] border hover:border-[rgba(157,0,255,0.3)] border-[rgba(0,243,255,0.5)] shadow-[0_0_40px_rgba(0,243,255,0.15)] rounded-[24px] p-8 transition-all relative overflow-hidden reveal" style="transition-delay: .1s">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-[48px] h-[48px] bg-[rgba(157,0,255,0.1)] rounded-[12px] flex items-center justify-center text-[var(--purple)] text-xl shrink-0"><i class="fa-solid fa-school"></i></div>
+            <div>
+              <div class="font-bold text-[15px] text-[var(--purple)]">HSC</div>
+              <div class="text-xs text-gray-400">Higher Secondary</div>
+            </div>
+          </div>
+          <span class="text-[10px] px-3 py-1 rounded-full bg-[rgba(157,0,255,0.1)] text-[var(--purple)] border border-[rgba(157,0,255,0.3)] font-bold tracking-wider mb-4 inline-block">CLASS XII</span>
+          <h3 class="font-display font-bold text-xl text-white mb-2 leading-tight">Higher Secondary Certificate</h3>
+          <div class="text-xs text-gray-400 mb-8 leading-relaxed">Century Foundation Matriculation Hr. Sec. School, Tiruppur</div>
+          <div class="flex items-end gap-2 mt-auto">
+            <span class="font-display font-bold text-4xl text-[var(--purple)] leading-none">75.66<span class="text-2xl">%</span></span>
+          </div>
+        </div>
+
+        <!-- SSLC -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border hover:border-[rgba(255,0,127,0.3)] border-transparent transition-all shadow-[0_0_30px_rgba(0,0,0,0.5)] reveal" style="transition-delay: .2s">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-[48px] h-[48px] bg-[rgba(255,0,127,0.1)] rounded-[12px] flex items-center justify-center text-[var(--pink)] text-xl shrink-0"><i class="fa-solid fa-book"></i></div>
+            <div>
+              <div class="font-bold text-[15px] text-[var(--pink)]">SSLC</div>
+              <div class="text-xs text-gray-400">Secondary School</div>
+            </div>
+          </div>
+          <span class="text-[10px] px-3 py-1 rounded-full bg-[rgba(255,0,127,0.1)] text-[var(--pink)] border border-[rgba(255,0,127,0.3)] font-bold tracking-wider mb-4 inline-block">CLASS X</span>
+          <h3 class="font-display font-bold text-xl text-white mb-2 leading-tight">Secondary School Leaving Certificate</h3>
+          <div class="text-xs text-gray-400 mb-8 leading-relaxed">Century Foundation Matriculation Hr. Sec. School, Tiruppur</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ SKILLS ════════════════ -->
+  <section id="skills" class="py-24 relative bg-[rgba(0,0,0,0.2)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="reveal mb-14">
+        <span class="section-tag">ARSENAL</span>
+        <h2 class="font-display font-bold text-5xl mt-2">Tools & Technology</h2>
+        <span class="grad-line mt-6"></span>
+      </div>
+      
+      <div class="mb-12 reveal">
+        <h3 class="text-xs text-gray-500 font-bold tracking-wider mb-6 uppercase">TECHNICAL</h3>
+        <div class="flex flex-wrap gap-4">
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#F7CD46] transition-colors"><i class="fa-brands fa-python text-[#F7CD46]"></i> Python</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--cyan)] transition-colors"><i class="fa-solid fa-table-cells text-[var(--cyan)]"></i> Pandas & NumPy</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#F2C811] transition-colors"><i class="fa-solid fa-chart-bar text-[#F2C811]"></i> Power BI</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#217346] transition-colors"><i class="fa-solid fa-file-excel text-[#217346]"></i> Excel (Advanced)</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--purple)] transition-colors"><i class="fa-solid fa-database text-[var(--purple)]"></i> MySQL & SQL</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#E76F00] transition-colors"><i class="fa-brands fa-java text-[#E76F00]"></i> Java</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#ffffff] transition-colors"><i class="fa-solid fa-c text-[#ffffff]"></i> C / C++</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#F05032] transition-colors"><i class="fa-brands fa-git-alt text-[#F05032]"></i> Git & GitHub</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--cyan)] transition-colors"><i class="fa-solid fa-robot text-[var(--cyan)]"></i> Machine Learning</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#0088cc] transition-colors"><i class="fa-solid fa-cloud text-[#0088cc]"></i> Cloud Computing</div>
+        </div>
+      </div>
+      
+      <div class="mb-16 reveal" style="transition-delay: .1s">
+        <h3 class="text-xs text-gray-500 font-bold tracking-wider mb-6 uppercase">SOFT SKILLS</h3>
+        <div class="flex flex-wrap gap-4">
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--purple)] transition-colors"><i class="fa-solid fa-circle-half-stroke text-[var(--purple)]"></i> Analytical Thinking</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--pink)] transition-colors"><i class="fa-solid fa-puzzle-piece text-[var(--pink)]"></i> Problem Solving</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--cyan)] transition-colors"><i class="fa-solid fa-comments text-[var(--cyan)]"></i> Communication</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[#00C853] transition-colors"><i class="fa-solid fa-people-group text-[#00C853]"></i> Teamwork</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 transition-colors">Presentation</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--purple)] transition-colors"><i class="fa-solid fa-briefcase text-[var(--purple)]"></i> Business Acumen</div>
+          <div class="px-5 py-2.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-sm text-gray-300 font-medium flex items-center gap-2 hover:border-[var(--cyan)] transition-colors"><i class="fa-solid fa-arrows-spin text-[var(--cyan)]"></i> Adaptability</div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal" style="transition-delay: .2s">
+        <!-- Card 1 -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border border-[rgba(255,255,255,0.05)] flex flex-col hover:border-[rgba(0,243,255,0.3)] transition-colors shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+          <div class="w-12 h-12 bg-[#0c2f32] rounded-[12px] flex items-center justify-center text-[var(--cyan)] text-xl mb-6"><i class="fa-solid fa-chart-line"></i></div>
+          <h3 class="font-bold text-lg text-[var(--cyan)] mb-4">Data & Analytics</h3>
+          <ul class="text-sm text-gray-400 space-y-3 mb-8">
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--cyan)] rounded-full"></div> Python (Pandas, NumPy)</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--cyan)] rounded-full"></div> Power BI & Dashboards</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--cyan)] rounded-full"></div> Excel Pivot & VLOOKUP</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--cyan)] rounded-full"></div> Exploratory Data Analysis</li>
+          </ul>
+          <div class="mt-auto self-start px-4 py-1.5 rounded-full bg-[rgba(0,243,255,0.1)] text-[var(--cyan)] text-[10px] font-bold tracking-widest border border-[rgba(0,243,255,0.2)] uppercase">CORE STRENGTH</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border border-[rgba(255,255,255,0.05)] flex flex-col hover:border-[rgba(157,0,255,0.3)] transition-colors shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+          <div class="w-12 h-12 bg-[rgba(157,0,255,0.1)] rounded-[12px] flex items-center justify-center text-[var(--purple)] text-xl mb-6"><i class="fa-solid fa-database"></i></div>
+          <h3 class="font-bold text-lg text-[var(--purple)] mb-4">Database & SQL</h3>
+          <ul class="text-sm text-gray-400 space-y-3 mb-8">
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--purple)] rounded-full"></div> MySQL</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--purple)] rounded-full"></div> SQL Queries & Joins</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--purple)] rounded-full"></div> Schema Design</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--purple)] rounded-full"></div> CRUD Operations</li>
+          </ul>
+          <div class="mt-auto self-start px-4 py-1.5 rounded-full bg-[rgba(157,0,255,0.1)] text-[var(--purple)] text-[10px] font-bold tracking-widest border border-[rgba(157,0,255,0.2)] uppercase">PRODUCTION-READY</div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border border-[rgba(255,255,255,0.05)] flex flex-col hover:border-[rgba(255,0,127,0.3)] transition-colors shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+          <div class="w-12 h-12 bg-[rgba(255,0,127,0.1)] rounded-[12px] flex items-center justify-center text-[var(--pink)] text-xl mb-6"><i class="fa-solid fa-code"></i></div>
+          <h3 class="font-bold text-lg text-[var(--pink)] mb-4">Programming</h3>
+          <ul class="text-sm text-gray-400 space-y-3 mb-8">
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--pink)] rounded-full"></div> Java (Full Stack)</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--pink)] rounded-full"></div> C & C++</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--pink)] rounded-full"></div> Git & Version Control</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[var(--pink)] rounded-full"></div> OOP Principles</li>
+          </ul>
+          <div class="mt-auto self-start px-4 py-1.5 rounded-full bg-[rgba(255,0,127,0.1)] text-[var(--pink)] text-[10px] font-bold tracking-widest border border-[rgba(255,0,127,0.2)] uppercase">HANDS-ON</div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border border-[rgba(255,255,255,0.05)] flex flex-col hover:border-[#6da5ff] transition-colors shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+          <div class="w-12 h-12 bg-[rgba(109,165,255,0.1)] rounded-[12px] flex items-center justify-center text-[#6da5ff] text-xl mb-6"><i class="fa-solid fa-robot"></i></div>
+          <h3 class="font-bold text-lg text-[#6da5ff] mb-4">AI & Cloud</h3>
+          <ul class="text-sm text-gray-400 space-y-3 mb-8">
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#6da5ff] rounded-full"></div> Machine Learning (Scikit-learn)</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#6da5ff] rounded-full"></div> Whisper ASR & NLP</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#6da5ff] rounded-full"></div> IaaS / PaaS / SaaS</li>
+            <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#6da5ff] rounded-full"></div> IoT & Cloud Deployment</li>
+          </ul>
+          <div class="mt-auto self-start px-4 py-1.5 rounded-full bg-[rgba(109,165,255,0.1)] text-[#6da5ff] text-[10px] font-bold tracking-widest border border-[rgba(109,165,255,0.2)] uppercase">EMERGING</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ PROJECTS ════════════════ -->
+  <section id="projects" class="py-24 relative">
+    <!-- Starry background for projects section -->
+    <div class="absolute inset-0 z-0">
+      <div class="absolute top-1/4 left-1/4 w-1 h-1 bg-[var(--cyan)] rounded-full shadow-[0_0_10px_var(--cyan)]"></div>
+      <div class="absolute top-3/4 right-1/4 w-1 h-1 bg-[var(--purple)] rounded-full shadow-[0_0_10px_var(--purple)]"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      <div class="reveal mb-14">
+        <span class="section-tag">BUILT IN THE LAB</span>
+        <h2 class="font-display font-bold text-5xl mt-2">Projects</h2>
+        <span class="grad-line mt-6"></span>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Project 1 -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border border-[rgba(255,255,255,0.05)] hover:border-[rgba(0,243,255,0.3)] transition-all flex flex-col justify-between group shadow-[0_0_30px_rgba(0,0,0,0.5)] reveal">
+          <div>
+            <div class="flex justify-between items-start mb-6">
+              <span class="text-[10px] px-3 py-1 rounded-full bg-[rgba(0,243,255,0.1)] text-[var(--cyan)] border border-[rgba(0,243,255,0.3)] font-bold tracking-wider uppercase">AI EDUCATION PLATFORM</span>
+              <a href="#" class="w-10 h-10 rounded-[12px] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] flex items-center justify-center text-gray-400 hover:text-[var(--cyan)] hover:border-[var(--cyan)] transition-colors"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            </div>
+            
+            <h3 class="font-display font-bold text-2xl text-white mb-4">JEDUAI CONNECT</h3>
+            <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+              Multilingual AI education platform integrating Whisper ASR for speech recognition, IndicTrans2 for regional language translation, adaptive tutoring algorithms, and microservices architecture.
+            </p>
+            
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center gap-3 text-sm text-gray-300">
+                <span class="w-6 h-6 rounded bg-[rgba(0,243,255,0.1)] text-[var(--cyan)] flex items-center justify-center text-xs"><i class="fa-solid fa-bolt"></i></span> 
+                <span><strong class="text-[var(--cyan)]">70% reduction</strong> in automated grading time</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm text-gray-300">
+                <span class="w-6 h-6 rounded bg-[rgba(0,243,255,0.1)] text-[var(--cyan)] flex items-center justify-center text-xs"><i class="fa-solid fa-user-group"></i></span> 
+                <span><strong class="text-[var(--cyan)]">40–60% increase</strong> in student engagement</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">Python</span>
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">Whisper ASR</span>
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">IndicTrans2</span>
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">Microservices</span>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="bg-[rgba(255,255,255,0.03)] rounded-[24px] p-8 border border-[rgba(255,255,255,0.05)] hover:border-[rgba(157,0,255,0.3)] transition-all flex flex-col justify-between group shadow-[0_0_30px_rgba(0,0,0,0.5)] reveal" style="transition-delay: .2s">
+          <div>
+            <div class="flex justify-between items-start mb-6">
+              <span class="text-[10px] px-3 py-1 rounded-full bg-[rgba(157,0,255,0.1)] text-[var(--purple)] border border-[rgba(157,0,255,0.3)] font-bold tracking-wider uppercase">FULL-STACK ERP</span>
+              <a href="https://github.com/Shafiq-456/SmartBiz-ERP" class="w-10 h-10 rounded-[12px] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] flex items-center justify-center text-gray-400 hover:text-[var(--purple)] hover:border-[var(--purple)] transition-colors"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            </div>
+            
+            <h3 class="font-display font-bold text-2xl text-white mb-4">SmartBiz ERP</h3>
+            <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+              Enterprise-grade full-stack business management system with inventory management, automated billing, real-time CRUD operations, and a secure MySQL backend. Designed for SME deployment.
+            </p>
+            
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center gap-3 text-sm text-gray-300">
+                <span class="w-6 h-6 rounded bg-[rgba(157,0,255,0.1)] text-[var(--purple)] flex items-center justify-center text-xs"><i class="fa-solid fa-chart-line"></i></span> 
+                <span><strong class="text-[var(--purple)]">40% reduction</strong> in manual data entry workload</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">Java</span>
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">MySQL</span>
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">HTML/CSS</span>
+            <span class="px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] text-xs text-gray-400">CRUD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ GITHUB ARSENAL ════════════════ -->
+  <section id="github" class="py-24 relative bg-[rgba(0,0,0,0.4)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="reveal mb-14 text-center">
+        <span class="section-tag">OPEN SOURCE EXPERIMENTS</span>
+        <h2 class="font-display font-bold text-5xl mt-2 mb-4">GitHub Arsenal</h2>
+        <span class="grad-line mx-auto"></span>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="https://github.com/Shafiq-456/Portfolio" target="_blank" class="glass-card p-6 reveal group block hover:-translate-y-2 transition-all">
+          <div class="flex justify-between items-start mb-4">
+            <i class="fa-solid fa-folder text-3xl text-[var(--cyan)]"></i>
+            <i class="fa-brands fa-github text-xl text-gray-500 group-hover:text-white transition-colors"></i>
+          </div>
+          <h3 class="font-bold text-xl mb-2 group-hover:text-[var(--cyan)] transition-colors">Portfolio</h3>
+          <p class="text-sm text-gray-400 mb-6">A sleek, professional portfolio site showcasing skills, projects, and educational achievements.</p>
+          <div class="text-xs text-[var(--cyan)] font-mono">HTML • CSS • JS</div>
+        </a>
+        <a href="https://github.com/Shafiq-456/The-One-App" target="_blank" class="glass-card p-6 reveal block group hover:-translate-y-2 transition-all">
+          <div class="flex justify-between items-start mb-4">
+            <i class="fa-solid fa-folder text-3xl text-[var(--purple)]"></i>
+            <i class="fa-brands fa-github text-xl text-gray-500 group-hover:text-white transition-colors"></i>
+          </div>
+          <h3 class="font-bold text-xl mb-2 group-hover:text-[var(--purple)] transition-colors">The-One-App</h3>
+          <p class="text-sm text-gray-400 mb-6">A unified multi-functional tool consolidating various utility features and APIs into a single sleek application interface.</p>
+          <div class="text-xs text-[var(--purple)] font-mono">React • Node.js • API</div>
+        </a>
+        <a href="https://github.com/Shafiq-456/GPay-QA-Portfolio" target="_blank" class="glass-card p-6 reveal block group hover:-translate-y-2 transition-all">
+          <div class="flex justify-between items-start mb-4">
+            <i class="fa-solid fa-folder text-3xl text-[var(--pink)]"></i>
+            <i class="fa-brands fa-github text-xl text-gray-500 group-hover:text-white transition-colors"></i>
+          </div>
+          <h3 class="font-bold text-xl mb-2 group-hover:text-[var(--pink)] transition-colors">GPay QA Portfolio</h3>
+          <p class="text-sm text-gray-400 mb-6">A comprehensive QA testing framework for Google Pay clone interface verifying transactional integrity.</p>
+          <div class="text-xs text-[var(--pink)] font-mono">Java • Selenium • QA</div>
+        </a>
+        <a href="https://github.com/Shafiq-456/Grace-Impex" target="_blank" class="glass-card p-6 reveal block group hover:-translate-y-2 transition-all">
+          <div class="flex justify-between items-start mb-4">
+            <i class="fa-solid fa-folder text-3xl text-[var(--cyan)]"></i>
+            <i class="fa-brands fa-github text-xl text-gray-500 group-hover:text-white transition-colors"></i>
+          </div>
+          <h3 class="font-bold text-xl mb-2 group-hover:text-[var(--cyan)] transition-colors">Grace Impex DB</h3>
+          <p class="text-sm text-gray-400 mb-6">Database management and import/export logistic tracking application designed for small business routing.</p>
+          <div class="text-xs text-[var(--cyan)] font-mono">SQL • Python</div>
+        </a>
+      </div>
+      <div class="text-center mt-12">
+        <a href="https://github.com/Shafiq-456?tab=repositories" target="_blank" class="btn-ghost px-8 py-3"><i class="fa-brands fa-github"></i> View All Repositories</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ INTERNSHIPS ════════════════ -->
+  <section id="internships" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="reveal mb-14">
+        <span class="section-tag">FIELD EXPERIENCE</span>
+        <h2 class="font-display font-bold text-5xl mt-2">Internships</h2>
+        <span class="grad-line"></span>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass-card p-8 reveal">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl bg-[rgba(0,243,255,0.1)] text-[var(--cyan)]">
+            <i class="fa-solid fa-chart-bar"></i>
+          </div>
+          <div class="text-xs font-bold tracking-widest mb-3 text-[var(--cyan)]">DATA ANALYTICS</div>
+          <h3 class="font-display font-semibold text-xl mb-4">Data Analytics Internship</h3>
+          <p class="text-sm leading-relaxed text-gray-400">Performed exploratory data analysis using Python (Pandas & NumPy). Built interactive Excel dashboards uncovering 3 key business trends. Delivered actionable insights to stakeholders.</p>
+        </div>
+        <div class="glass-card p-8 reveal" style="transition-delay:.1s">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl bg-[rgba(157,0,255,0.1)] text-[var(--purple)]">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div class="text-xs font-bold tracking-widest mb-3 text-[var(--purple)]">MACHINE LEARNING</div>
+          <h3 class="font-display font-semibold text-xl mb-4">Machine Learning Internship</h3>
+          <p class="text-sm leading-relaxed text-gray-400">Developed and trained ML pipelines reducing prediction errors by 18%. Explored automated feature engineering and model evaluation techniques.</p>
+        </div>
+        <div class="glass-card p-8 reveal" style="transition-delay:.2s">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl bg-[rgba(255,0,127,0.1)] text-[var(--pink)]">
+            <i class="fa-solid fa-cloud"></i>
+          </div>
+          <div class="text-xs font-bold tracking-widest mb-3 text-[var(--pink)]">CLOUD COMPUTING</div>
+          <h3 class="font-display font-semibold text-xl mb-4">Cloud Computing Internship</h3>
+          <p class="text-sm leading-relaxed text-gray-400">Mastered core cloud concepts including IaaS, PaaS, SaaS, virtualization, and cloud deployment models. Gained hands-on exposure to cloud architecture design.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ CERTIFICATIONS ════════════════ -->
+  <section id="certifications" class="py-24 relative bg-[rgba(0,0,0,0.3)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="reveal mb-14 text-center">
+        <span class="section-tag">CREDENTIALS</span>
+        <h2 class="font-display font-bold text-5xl mt-2 mb-4">Certification Vault</h2>
+        <span class="grad-line mx-auto"></span>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5 reveal">
+        <div class="cert-badge"><div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[rgba(0,243,255,0.1)] text-[var(--cyan)]"><i class="fa-brands fa-java"></i></div><div><div class="font-semibold text-sm">Java Full Stack Developer</div><div class="text-xs text-gray-500 mt-1">Infosys Springboard</div></div></div>
+        <div class="cert-badge"><div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[rgba(157,0,255,0.1)] text-[var(--purple)]"><i class="fa-solid fa-robot"></i></div><div><div class="font-semibold text-sm">Generative AI in HR</div><div class="text-xs text-gray-500 mt-1">Coursera</div></div></div>
+        <div class="cert-badge"><div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[rgba(255,0,127,0.1)] text-[var(--pink)]"><i class="fa-solid fa-database"></i></div><div><div class="font-semibold text-sm">Introduction to SQL</div><div class="text-xs text-gray-500 mt-1">Simplilearn</div></div></div>
+        <div class="cert-badge"><div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[rgba(0,243,255,0.1)] text-[var(--cyan)]"><i class="fa-solid fa-chart-bar"></i></div><div><div class="font-semibold text-sm">Business Analysis Basics</div><div class="text-xs text-gray-500 mt-1">Simplilearn</div></div></div>
+        <div class="cert-badge"><div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[rgba(157,0,255,0.1)] text-[var(--purple)]"><i class="fa-solid fa-rotate"></i></div><div><div class="font-semibold text-sm">Agile Scrum Certification</div><div class="text-xs text-gray-500 mt-1">Infosys Springboard</div></div></div>
+        <div class="cert-badge"><div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[rgba(255,0,127,0.1)] text-[var(--pink)]"><i class="fa-solid fa-star"></i></div><div><div class="font-semibold text-sm">IoT & Digital Transformation GOLD</div><div class="text-xs text-gray-500 mt-1">NASSCOM</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ CONTACT ════════════════ -->
+  <section id="contact" class="py-24 relative">
+    <div class="max-w-3xl mx-auto px-6 text-center reveal">
+      <span class="section-tag">LET'S CONNECT</span>
+      <h2 class="font-display font-bold text-5xl mt-2 mb-4">Get In Touch</h2>
+      <p class="text-lg mb-12 text-gray-400">Ready to team up on the next big data mission? Let's talk.</p>
+      
+      <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+        <a href="mailto:shafiqhomelife@gmail.com" class="btn-primary px-8 py-4 text-sm"><i class="fa-solid fa-envelope"></i> shafiqhomelife@gmail.com</a>
+        <a href="https://wa.me/919345310480" target="_blank" class="btn-ghost px-8 py-4 text-sm hover:border-[var(--pink)] hover:text-[var(--pink)] hover:bg-[rgba(255,0,127,0.1)]"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp Me</a>
+      </div>
+
+      <div class="flex justify-center gap-5 mb-12">
+        <a href="https://github.com/Shafiq-456" target="_blank" class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-all hover:scale-110 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] hover:border-[var(--cyan)] hover:text-[var(--cyan)]"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com/in/mdshafiq45/" target="_blank" class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-all hover:scale-110 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] hover:border-[var(--purple)] hover:text-[var(--purple)]"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+
+      <div class="glass-card p-8 text-left max-w-2xl mx-auto">
+        <h3 class="font-display font-semibold text-xl mb-6">Or send a quick message</h3>
+        <form id="contact-form" onsubmit="sendEmail(event)" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <input id="cf-name" type="text" placeholder="Your name" class="form-input" required>
+            <input id="cf-email" type="email" placeholder="Your email" class="form-input" required>
+          </div>
+          <input id="cf-subject" type="text" placeholder="Subject" class="form-input" required>
+          <textarea id="cf-message" rows="4" placeholder="Your message..." class="form-input resize-none" required></textarea>
+          <button type="submit" class="btn-primary w-full py-4 text-sm justify-center mt-2"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ FOOTER ════════════════ -->
+  <footer class="py-12 text-center text-xs text-gray-500 border-t border-[rgba(255,255,255,0.05)] mt-12">
+    <p>© 2025 Mohammed Shafiq AS • Karur, Tamil Nadu • <a href="mailto:shafiqhomelife@gmail.com" class="text-[var(--cyan)] hover:underline">shafiqhomelife@gmail.com</a></p>
+  </footer>
+
+  <script>
+    // ── MOBILE NAV ──
+    function toggleMenu() {
+      const m = document.getElementById('mobile-menu');
+      m.classList.toggle('open');
+    }
+  
+    // ── CURSOR CODE ──
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener('mousemove', e => {
+      mx=e.clientX; my=e.clientY;
+      dot.style.left = mx+'px'; dot.style.top = my+'px';
+    });
+    function renderCursor() {
+      rx += (mx - rx) * 0.15;
+      ry += (my - ry) * 0.15;
+      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+      requestAnimationFrame(renderCursor);
+    }
+    renderCursor();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '60px'; ring.style.height = '60px';
+        ring.style.borderColor = 'rgba(157,0,255,0.8)';
+        ring.style.background = 'rgba(157,0,255,0.1)';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '36px'; ring.style.height = '36px';
+        ring.style.borderColor = 'rgba(0,243,255,0.5)';
+        ring.style.background = 'transparent';
+      });
+    });
+
+    // ── BG CANVAS PARTICLES ──
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles=[];
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    for (let i = 0; i < 70; i++) particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5 });
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for(let i=0; i<particles.length; i++) {
+        for(let j=i+1; j<particles.length; j++) {
+          const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist < 120) {
+            ctx.beginPath(); ctx.strokeStyle = `rgba(0,243,255,${0.15*(1-dist/120)})`;
+            ctx.lineWidth=1; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+          }
+        }
+      }
+      particles.forEach(p => {
+        ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fillStyle='rgba(157,0,255,0.5)'; ctx.fill();
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0||p.x>W) p.vx*=-1; if(p.y<0||p.y>H) p.vy*=-1;
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // ── SCROLL REVEAL ──
+    const reveals = document.querySelectorAll('.reveal');
+    const revObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => revObs.observe(el));
+
+    // ── CONTACT FORM ──
+    function sendEmail(e) {
+      e.preventDefault();
+      const name = document.getElementById('cf-name').value;
+      const email = document.getElementById('cf-email').value;
+      const subject = document.getElementById('cf-subject').value;
+      const message = document.getElementById('cf-message').value;
+      const body = `Name: ${name}%0AEmail: ${email}%0A%0A${message}`;
+      window.location.href = `mailto:shafiqhomelife@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+    }
+  </script>
+</body>
+</html>
