@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <script>
+// Prevent unhandled removeChild/insertBefore exceptions when React unmounts nodes modified by GSAP/SplitType
+const origRemoveChild = Node.prototype.removeChild;
+Node.prototype.removeChild = function(child) {
+    if (child && child.parentNode !== this) {
+        if (child.parentNode) return child.parentNode.removeChild(child);
+        return child;
+    }
+    return origRemoveChild.call(this, child);
+};
+const origInsertBefore = Node.prototype.insertBefore;
+Node.prototype.insertBefore = function(newNode, refNode) {
+    if (refNode && refNode.parentNode !== this) {
+        if (this) return this.appendChild(newNode);
+        return newNode;
+    }
+    return origInsertBefore.call(this, newNode, refNode);
+};
+</script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/ShafiqDevLogo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mohammed Shafiq | AI &amp; Full-Stack Developer</title>
+    <meta name="description" content="Explore Mohammed Shafiq's portfolio featuring AI-powered applications, full-stack development, data analytics, projects, and technical skills." />
+    <meta property="og:title" content="Mohammed Shafiq | AI &amp; Full-Stack Developer" />
+    <meta property="og:description" content="Explore Mohammed Shafiq's portfolio featuring AI-powered applications, full-stack development, data analytics, projects, and technical skills." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#101114" />
+    <link rel="stylesheet" crossorigin href="/assets/index-BahYYlp2.css">
+    <link rel="stylesheet" crossorigin href="/assets/Navbar-wB6fHtnG.css">
+    <link rel="stylesheet" crossorigin href="/assets/MainContainer-C5g58z3x.css">
+    <script type="module" crossorigin src="/assets/index-B581kjCa.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+
+</html>
