@@ -7382,7 +7382,7 @@ const Bd = ({
                     href: "/#",
                     className: "loader-title",
                     "data-cursor": "disable",
-                    children: "moncy.dev"
+                    children: "shafiq.dev"
                 }), L.jsx("div", {
                     className: `loaderGame ${o&&"loader-out"}`,
                     children: L.jsxs("div", {
